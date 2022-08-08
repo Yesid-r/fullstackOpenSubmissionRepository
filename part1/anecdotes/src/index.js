@@ -6,20 +6,56 @@ const Button = ({ onClick, text }) => (
     {text}
   </button>
 )
-const App = (props) => {
-  const [selected, setSelected] = useState(0)
-  const {anecdotes} = props
+const Anecdote = ({text, votesCount}) =>
+  <div>
+    <p>{text}</p>
+    <p>has {votesCount} votes</p>
+  </div>
 
-  const random = Math.floor(Math.random() * anecdotes.length)
-  const setAnecdote = newValue => {
-    setSelected(newValue)
+const Winner = ({anecdotes, allVotes}) => {
+  const highestVoteCount = Math.max(...allVotes)
+  const winnerIndex = allVotes.indexOf(highestVoteCount)
+  const winner = anecdotes[winnerIndex]
+  if (highestVoteCount === 0) {
+    return (
+      <p>No votes yet</p>
+    )
   }
+
   return (
     <div>
-      <Button onClick={() => setAnecdote(random)} text="show new anecdote" />
+      <p>{winner}</p>
+      <p>has {highestVoteCount} votes</p>
+    </div>
+  )
+}
+
+
+const App = ({anecdotes}) => {
+  const [selected, setSelected] = useState(0)
+  const [allVotes, setAllVotes] = useState(Array(6).fill(0))
+
+  const handleVoteClick = () => {
+    const newAllVotes = [...allVotes]
+    newAllVotes[selected] += 1
+    setAllVotes(newAllVotes)
+  }
+
+  const handleAnecdoteClick = () => {
+    const arrayIndex = Math.floor(Math.random() * anecdotes.length)
+    setSelected(arrayIndex)
+  }
+
+  return (
+    <div>
       <h1>Anecdote of the day</h1>
-      {anecdotes[selected]}
-      {console.log(`anecdote selected ---> ${anecdotes[selected]}`)}
+
+      <Anecdote text={anecdotes[selected]} votesCount={allVotes[selected]} />
+      <Button onClick={handleVoteClick} text="vote"/>
+      <Button onClick={handleAnecdoteClick} text="next anecdote"/>
+      <h1>Anecdote whit most votes</h1>
+      
+      <Winner anecdotes={anecdotes} allVotes={allVotes} />
     </div>
   )
 }
