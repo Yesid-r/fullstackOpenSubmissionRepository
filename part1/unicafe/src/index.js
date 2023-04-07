@@ -76,7 +76,7 @@ const App = () => {
   const handleBadClick = () =>
     setClicks({...clicks, bad: clicks.bad + 1})
   console.log(`clicks for good is --> ${clicks.good}`)
-
+  console.log(`clicks for neutral is --> ${clicks.neutral}`);
   return (
     <div>
       

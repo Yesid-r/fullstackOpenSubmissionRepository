@@ -50,9 +50,15 @@ const Part = (props) => {
 }
 
 const Total = (props) => {
+let numberExcercises = 0;
+const parts = props.course.parts;
+parts.forEach(element => {
+  numberExcercises += element.exercises
+  
+});
   return (
     <div>
-      <p>Number of exercises {props.course.parts[0].exercises + props.course.parts[1].exercises + props.course.parts[2].exercises}</p>
+      <p>Number of exercises {numberExcercises}</p>
     </div>
   )
 }
